@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open All GLI (windows)</title>
+    <script>
+    	//declare lat and lon in order to avoid scope error
+        let lat, lon;
+
+        window.onload = function () {
+            // Get the current hash from the URL
+            const route = window.location.hash.substr(2); // Remove the '#/' part
+
+            // Split the hash by "/"
+            lat = route.split("/")[0];
+            lon = route.split("/")[1];
+
+            // Display lat and lon on the page
+            document.getElementById("latitude").textContent = `Latitude: ${lat}`;
+            document.getElementById("longitude").textContent = `Longitude: ${lon}`;
+
+            // Call openTiledWindows after lat and lon are set
+            openTiledWindows();
+        };
+
+        function openTiledWindows() {
+            
+            const url1 = `https://www.bing.com/maps/?cp=${lat}~${lon}&lvl=13`;
+            const url2 = `https://mapilio.com/app?lat=${lat}&lng=${lon}&zoom=13`;
+            const url3 = `https://www.mapillary.com/app/?lat=${lat}&lng=${lon}&z=13`;
+            const url4 = `https://kartaview.org/map/@${lat},${lon},13z`;
+
+            
+            const screenWidth = window.screen.width;
+            const screenHeight = window.screen.height;
+
+            // window dimensions calculations
+            const windowWidth = screenWidth / 2;  // Half the screen width
+            const windowHeight = screenHeight / 2; // Half the screen height
+
+            // Open 4 new windows with specified dimensions and locations
+            const win1 = window.open(url1, "_blank", `width=${windowWidth}, height=${windowHeight}, left=0, top=0`);
+            const win2 = window.open(url2, "_blank", `width=${windowWidth}, height=${windowHeight}, left=${windowWidth}, top=0`);
+            const win3 = window.open(url3, "_blank", `width=${windowWidth}, height=${windowHeight}, left=0, top=${windowHeight}`);
+            const win4 = window.open(url4, "_blank", `width=${windowWidth}, height=${windowHeight}, left=${windowWidth}, top=${windowHeight}`);
+            
+          
+            console.log("lat->", lat, "lon->", lon);
+        }
+           // Close the current window after opening new windows
+          // window.close();
+    </script>
+</head>
+<body>
+    <h1>Opening all GLI (windows)...</h1>
+    <p id="latitude"></p>
+    <p id="longitude"></p>
+</body>
+</html>
