@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Open All GLI (windows)</title>
     <script>
-    	//declare lat and lon in order to avoid scope error
+        // Declare lat and lon to avoid scope errors
         let lat, lon;
+        let win1, win2, win3, win4;
 
         window.onload = function () {
             // Get the current hash from the URL
@@ -25,31 +26,42 @@
         };
 
         function openTiledWindows() {
-            
             const url1 = `https://www.bing.com/maps/?cp=${lat}~${lon}&lvl=13`;
             const url2 = `https://mapilio.com/app?lat=${lat}&lng=${lon}&zoom=13`;
             const url3 = `https://www.mapillary.com/app/?lat=${lat}&lng=${lon}&z=13`;
             const url4 = `https://kartaview.org/map/@${lat},${lon},13z`;
 
-            
             const screenWidth = window.screen.width;
             const screenHeight = window.screen.height;
 
-            // window dimensions calculations
+            // Window dimensions calculations
             const windowWidth = screenWidth / 2;  // Half the screen width
             const windowHeight = screenHeight / 2; // Half the screen height
 
             // Open 4 new windows with specified dimensions and locations
-            const win1 = window.open(url1, "_blank", `width=${windowWidth}, height=${windowHeight}, left=0, top=0`);
-            const win2 = window.open(url2, "_blank", `width=${windowWidth}, height=${windowHeight}, left=${windowWidth}, top=0`);
-            const win3 = window.open(url3, "_blank", `width=${windowWidth}, height=${windowHeight}, left=0, top=${windowHeight}`);
-            const win4 = window.open(url4, "_blank", `width=${windowWidth}, height=${windowHeight}, left=${windowWidth}, top=${windowHeight}`);
-            
-          
-            console.log("lat->", lat, "lon->", lon);
+            win1 = window.open(url1, "_blank", `width=${windowWidth},height=${windowHeight},left=0,top=0`);
+            win2 = window.open(url2, "_blank", `width=${windowWidth},height=${windowHeight},left=${windowWidth},top=0`);
+            win3 = window.open(url3, "_blank", `width=${windowWidth},height=${windowHeight},left=0,top=${windowHeight}`);
+            win4 = window.open(url4, "_blank", `width=${windowWidth},height=${windowHeight},left=${windowWidth},top=${windowHeight}`);
+
+            // Start checking if all windows have loaded
+            checkWindowsLoaded();
         }
-           // Close the current window after opening new windows
-          // window.close();
+
+        // Function to check if all windows have finished loading
+        function checkWindowsLoaded() {
+            // Ensure each window's readyState is 'complete'
+            if (win1.document.readyState === 'complete' &&
+                win2.document.readyState === 'complete' &&
+                win3.document.readyState === 'complete' &&
+                win4.document.readyState === 'complete') {
+                // Close the original window
+                window.close();
+            } else {
+                // If not all windows are loaded, check again after 100ms
+                setTimeout(checkWindowsLoaded, 100);
+            }
+        }
     </script>
 </head>
 <body>
